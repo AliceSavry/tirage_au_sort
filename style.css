@@ -95,14 +95,17 @@ button:hover {
     pointer-events: none;
     z-index: 1000;
 }
-/* Icône animée */
+/* Icône en arrière-plan */
 #movingIcon {
-    position: absolute;
-    width: 80px;
-    height: auto;
-    border-radius: 50%; /* Icône ronde */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-    animation: moveAround 10s infinite; /* Animation infinie */
+    position: fixed; /* Fixe l'icône en arrière-plan */
+    top: 50%; /* Centré verticalement */
+    left: 50%; /* Centré horizontalement */
+    transform: translate(-50%, -50%); /* Centre l'icône précisément */
+    width: 200px; /* Taille plus petite */
+    height: auto; /* Conserve les proportions */
+    opacity: 0.1; /* Rend l'icône très transparente pour un effet subtil */
+    pointer-events: none; /* Empêche l'interaction avec la souris */
+    z-index: -1; /* Place l'icône derrière le contenu principal */
 }
 
 /* Animation de déplacement */
