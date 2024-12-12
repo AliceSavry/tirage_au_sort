@@ -1,4 +1,5 @@
 const GIPHY_API_KEY = "i7DN7Y5grWRR8hTP53hOgF2KEboVz7v6"; // Votre clé API
+const gifTags = ["unluck", "loser", "fail", "oops", "bad luck", "defeat"]; // Liste de tags pour les GIFs
 const defaultGifs = [
     "https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif",
     "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
@@ -8,7 +9,9 @@ const defaultGifs = [
 // Fonction pour obtenir un GIF aléatoire depuis Giphy
 async function fetchRandomGif() {
     try {
-        const response = await fetch(`https://api.giphy.com/v1/gifs/random?api_key=${GIPHY_API_KEY}&tag=funny&rating=g`);
+        // Choisir un tag aléatoire dans la liste
+        const randomTag = gifTags[Math.floor(Math.random() * gifTags.length)];
+        const response = await fetch(`https://api.giphy.com/v1/gifs/random?api_key=${GIPHY_API_KEY}&tag=${randomTag}&rating=g`);
         if (!response.ok) throw new Error("Erreur lors de la récupération du GIF.");
         const data = await response.json();
         return data.data.images.original.url; // URL du GIF
