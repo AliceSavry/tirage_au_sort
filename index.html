@@ -9,15 +9,22 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 20px;
+            margin: 0;
+            padding: 20px;
             background: linear-gradient(to bottom, #fef4e8, #d3eaf7); /* Doux dégradé pastel */
             color: #333;
+            min-height: 100vh; /* S'étend sur toute la hauteur de l'écran */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
         }
         h1 {
             font-family: 'Shadows Into Light Two', cursive;
             font-size: 50px;
             font-weight: bold;
             color: #333;
+            margin-top: 20px;
         }
         #input-container {
             display: flex;
@@ -57,18 +64,18 @@
             font-size: 40px;
             font-weight: italic;
             color: green;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: inline-block;
+            padding: 10px 20px;
             border: 2px dashed #ccc;
             border-radius: 5px;
-            margin: 20px auto;
-            width: 50%;
-            min-width: 300px;
-            transition: color 0.3s;
             background: rgba(255, 255, 255, 0.8);
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            width: auto;
+            max-width: 90%; /* Limite la largeur à 90% de l'écran */
+            white-space: nowrap; /* Empêche le texte de passer à la ligne */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Ajoute "..." si le texte dépasse la largeur maximale */
+            text-align: center;
         }
         #animationGif {
             display: block;
@@ -117,11 +124,11 @@
             // Lancer le changement à intervalles réguliers
             const interval = setInterval(updateDotsAndGif, 250); // Change toutes les 250ms
 
-            // Arrêter l'animation après 1 seconde
+            // Arrêter l'animation après 2 secondes
             setTimeout(() => {
                 clearInterval(interval);
                 callback();
-            }, 1000);
+            }, 2000);
         }
 
         function getRandomColor() {
