@@ -13,26 +13,18 @@ body {
     align-items: center;
 }
 
-/* Titre */
+/* Titre principal */
 h1 {
     font-family: 'Shadows Into Light Two', cursive;
     font-size: 2.5em;
     font-weight: bold;
+    color: #333;
     margin-top: 20px;
 }
 
-/* Zone d'entrée */
-#input-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0;
-}
-
+/* Zone de texte */
 textarea {
-    font-family: 'Shadows Into Light Two', cursive;
+    font-family: 'Playwrite TZ Guides', sans-serif;
     font-size: 1em;
     width: 90%;
     max-width: 500px;
@@ -65,7 +57,6 @@ button:hover {
 
 /* Résultat */
 #winner {
-    margin-top: 20px;
     font-family: 'Knewave', cursive;
     font-size: 1.5em;
     font-weight: italic;
@@ -79,7 +70,20 @@ button:hover {
     text-align: center;
 }
 
-/* Historique */
+/* Icône animée */
+#movingIcon {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: auto;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Historique et scoreboard */
 #history ul, #scoreboard ul {
     list-style: none;
     padding: 0;
@@ -94,25 +98,4 @@ button:hover {
     height: 100%;
     pointer-events: none;
     z-index: 1000;
-}
-/* Icône en arrière-plan */
-#movingIcon {
-    position: fixed; /* Fixe l'icône en arrière-plan */
-    top: 50%; /* Centré verticalement */
-    left: 50%; /* Centré horizontalement */
-    transform: translate(-50%, -50%); /* Centre l'icône précisément */
-    width: 200px; /* Taille plus petite */
-    height: auto; /* Conserve les proportions */
-    opacity: 0.1; /* Rend l'icône très transparente pour un effet subtil */
-    pointer-events: none; /* Empêche l'interaction avec la souris */
-    z-index: -1; /* Place l'icône derrière le contenu principal */
-}
-
-/* Animation de déplacement */
-@keyframes moveAround {
-    0% { top: 10%; left: 10%; }
-    25% { top: 10%; left: 80%; }
-    50% { top: 80%; left: 80%; }
-    75% { top: 80%; left: 10%; }
-    100% { top: 10%; left: 10%; }
 }
