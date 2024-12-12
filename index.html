@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unluck Wheel</title>
-    <!-- Lien vers les polices Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Knewave&family=Leckerli+One&family=Shadows+Into+Light+Two&display=swap" rel="stylesheet">
     <style>
         body {
@@ -13,13 +12,13 @@
             margin: 20px;
         }
         h1 {
-            font-family: 'Shadows Into Light Two', cursive; /* Police pour l'en-tête */
+            font-family: 'Shadows Into Light Two', cursive;
             font-size: 50px;
             font-weight: bold;
             color: #333;
         }
         textarea {
-            font-family: 'Shadows Into Light Two', cursive; /* Police pour la zone de texte */
+            font-family: 'Shadows Into Light Two', cursive;
             font-size: 18px;
             width: 90%;
             max-width: 500px;
@@ -30,7 +29,7 @@
             border-radius: 5px;
         }
         button {
-            font-family: 'Leckerli One', cursive; /* Police pour le bouton */
+            font-family: 'Leckerli One', cursive;
             font-size: 20px;
             padding: 10px 20px;
             cursor: pointer;
@@ -45,7 +44,7 @@
         }
         #winner {
             margin-top: 20px;
-            font-family: 'Knewave', cursive; /* Police pour la réponse */
+            font-family: 'Knewave', cursive;
             font-size: 40px;
             font-weight: italic;
             color: green;
@@ -60,37 +59,49 @@
             min-width: 300px;
             transition: color 0.3s;
         }
+        #animationGif {
+            display: none;
+            width: 300px;
+            margin: 20px auto;
+        }
     </style>
 </head>
 <body>
     <h1>Unluck Wheel</h1>
     <textarea id="participantInput" rows="10" placeholder="Collez ici les noms des participants, un par ligne"></textarea><br>
     <button id="drawButton">Faire le Tirage</button>
+    <img id="animationGif" src="" alt="GIF aléatoire">
     <div id="winner">Le gagnant s'affichera ici</div>
 
     <script>
-        // Fonction pour générer une couleur aléatoire
+        const GIPHY_API_KEY = "i7DN7Y5grWRR8hTP53hOgF2KEboVz7v6"; // Votre clé API
+
+        // Fonction pour obtenir un GIF aléatoire depuis Giphy
+        async function fetchRandomGif() {
+            const response = await fetch(`https://api.giphy.com/v1/gifs/random?api_key=${GIPHY_API_KEY}&tag=funny&rating=g`);
+            const data = await response.json();
+            return data.data.images.original.url; // URL du GIF
+        }
+
         function getRandomColor() {
             return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
         }
 
-        // Fonction pour lancer l'animation
-        function startAnimation(participants, winnerDiv, callback) {
+        function startAnimation(participants, winnerDiv, gif, callback) {
             let index = 0;
             const interval = setInterval(() => {
                 winnerDiv.textContent = participants[index];
                 index = (index + 1) % participants.length;
-                winnerDiv.style.color = getRandomColor(); // Change la couleur pendant l'animation
-            }, 100); // Change le nom toutes les 100ms
+                winnerDiv.style.color = getRandomColor();
+            }, 100);
 
-            // Arrête l'animation après 3 secondes
             setTimeout(() => {
                 clearInterval(interval);
-                callback(); // Appelle la fonction pour afficher le gagnant
-            }, 3000); // Durée de l'animation
+                callback();
+            }, 3000);
         }
 
-        document.getElementById("drawButton").addEventListener("click", function () {
+        document.getElementById("drawButton").addEventListener("click", async function () {
             const input = document.getElementById("participantInput").value.trim();
             const participants = input.split("\n").filter(name => name.trim() !== "");
 
@@ -100,13 +111,19 @@
             }
 
             const winnerDiv = document.getElementById("winner");
+            const gif = document.getElementById("animationGif");
+
+            // Obtenez un nouveau GIF
+            const gifUrl = await fetchRandomGif();
+            gif.src = gifUrl;
+            gif.style.display = "block";
 
             // Lancer l'animation
-            startAnimation(participants, winnerDiv, () => {
-                // Sélectionne un gagnant aléatoire après l'animation
+            startAnimation(participants, winnerDiv, gif, () => {
                 const winner = participants[Math.floor(Math.random() * participants.length)];
                 winnerDiv.textContent = `Le gagnant est : ${winner}`;
-                winnerDiv.style.color = getRandomColor(); // Change la couleur du gagnant
+                winnerDiv.style.color = getRandomColor();
+                gif.style.display = "none"; // Masquer le GIF après l'animation
             });
         });
     </script>
