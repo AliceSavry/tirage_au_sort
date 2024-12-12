@@ -106,6 +106,13 @@
             return data.data.images.original.url; // URL du GIF
         }
 
+        // Charger un GIF dès le chargement de la page
+        window.onload = async function () {
+            const gif = document.getElementById("animationGif");
+            const gifUrl = await fetchRandomGif();
+            gif.src = gifUrl; // Met le GIF dans la balise <img>
+        };
+
         async function startAnimation(participants, winnerDiv, gif, callback) {
             let dotCount = 0;
 
@@ -113,7 +120,7 @@
             async function updateDotsAndGif() {
                 // Ajouter les points défilants
                 dotCount = (dotCount + 1) % 4; // Cycle : 0, 1, 2, 3
-                const dots = ".".repeat(dotCount); // Génère ".", "..", "...", "....", "...", "..", "." ou "...."
+                const dots = ".".repeat(dotCount); // Génère ".", "..", "...","....", "...", "..", "."
                 winnerDiv.textContent = dots;
 
                 // Obtenir un nouveau GIF
