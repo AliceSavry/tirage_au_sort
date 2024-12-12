@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tirage au Sort</title>
+    <title>Unluck Wheel</title>
     <!-- Lien vers les polices Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Knewave&family=Leckerli+One&family=Shadows+Into+Light+Two&display=swap" rel="stylesheet">
     <style>
@@ -33,30 +33,31 @@
             font-size: 20px;
             padding: 10px 20px;
             cursor: pointer;
-            background-color: #f4a261;
-            color: #fff;
             border: none;
             border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: CDF6B6;
+            transition: background-color 0.3s, color 0.3s;
         }
         #winner {
             margin-top: 20px;
             font-family: 'Knewave', cursive; /* Police pour la réponse */
-            font-size: 40px;
-            color: green;
+            font-size: 24px;
+            font-weight: bold;
+            transition: color 0.3s;
         }
     </style>
 </head>
 <body>
-    <h1>Unlucky Wheel</h1>
+    <h1>Unluck Wheel</h1>
     <textarea id="participantInput" rows="10" placeholder="Collez ici les noms des participants, un par ligne"></textarea><br>
     <button id="drawButton">Faire le Tirage</button>
     <div id="winner"></div>
 
     <script>
+        // Fonction pour générer une couleur aléatoire
+        function getRandomColor() {
+            return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+        }
+
         document.getElementById("drawButton").addEventListener("click", function () {
             const input = document.getElementById("participantInput").value.trim();
             const participants = input.split("\n").filter(name => name.trim() !== "");
@@ -66,8 +67,18 @@
                 return;
             }
 
+            // Sélection d'un gagnant
             const winner = participants[Math.floor(Math.random() * participants.length)];
-            document.getElementById("winner").textContent = `Le gagnant est : ${winner}`;
+
+            // Changer la couleur du bouton
+            const newButtonColor = getRandomColor();
+            this.style.backgroundColor = newButtonColor;
+            this.style.color = getRandomColor();
+
+            // Afficher le gagnant avec une nouvelle couleur
+            const winnerDiv = document.getElementById("winner");
+            winnerDiv.textContent = `Le gagnant est : ${winner}`;
+            winnerDiv.style.color = getRandomColor();
         });
     </script>
 </body>
