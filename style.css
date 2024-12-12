@@ -43,7 +43,7 @@ h1 {
 
 /* Zone de texte */
 textarea {
-    font-family: 'Playwrite TZ Guides', sans-serif;
+    font-family: 'Knewave', cursive;
     font-size: 1em;
     width: 90%;
     max-width: 500px;
@@ -82,7 +82,7 @@ button:hover {
 
 /* Résultat */
 #winner {
-    font-family: 'Knewave', cursive;
+    font-family: 'Playwrite TZ Guides', sans-serif;
     font-size: 1.5em;
     font-weight: italic;
     color: green;
