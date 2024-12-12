@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tirage au Sort</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #winner {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tirage au Sort</h1>
+    <input type="file" id="fileInput" accept=".csv">
+    <button id="drawButton" disabled>Faire le Tirage</button>
+    <div id="winner"></div>
+
+    <script>
+        let participants = [];
+
+        // Charger le fichier CSV
+        document.getElementById("fileInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const rows = e.target.result.split("\n");
+                    participants = rows.map(row => row.trim()).filter(row => row !== "");
+                    if (participants.length > 1) {
+                        document.getElementById("drawButton").disabled = false;
+                    } else {
+                        alert("Le fichier doit contenir au moins 2 participants.");
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // Effectuer le tirage au sort
+        document.getElementById("drawButton").addEventListener("click", function () {
+            if (participants.length > 0) {
+                const winner = participants[Math.floor(Math.random() * participants.length)];
+                document.getElementById("winner").textContent = `Le gagnant est : ${winner}`;
+            }
+        });
+    </script>
+</body>
+</html>
