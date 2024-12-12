@@ -4,9 +4,11 @@ body {
     text-align: center;
     margin: 0;
     padding: 20px;
-    background: linear-gradient(to bottom, #fef4e8, #d3eaf7);
+    background: linear-gradient(to bottom, #fef4e8, #d3eaf7), 
+                url('android-chrome-512x512.png') no-repeat center center; /* Dégradé + image */
+    background-size: 300px; /* Taille de l'image */
     color: #333;
-    min-height: 100vh;
+    min-height: 100vh; /* S'étend sur toute la hauteur de l'écran */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -76,9 +78,9 @@ button:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 200px;
+    width: 200px; /* Taille réduite */
     height: auto;
-    opacity: 0.1;
+    opacity: 0.1; /* Transparence pour le filigrane */
     pointer-events: none;
     z-index: -1;
 }
