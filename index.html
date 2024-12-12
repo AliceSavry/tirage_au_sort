@@ -145,7 +145,7 @@
             // Lancer l'animation
             await startAnimation(participants, winnerDiv, gif, () => {
                 const winner = participants[Math.floor(Math.random() * participants.length)];
-                winnerDiv.textContent = `Désolé ${winner}, tu es interrogé !`;
+                winnerDiv.textContent = `Désolé ${winner}, c'est à toi !`;
                 winnerDiv.style.color = getRandomColor();
             });
         });
