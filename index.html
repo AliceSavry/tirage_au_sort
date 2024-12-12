@@ -121,7 +121,7 @@
             // Lancer l'animation
             startAnimation(participants, winnerDiv, gif, () => {
                 const winner = participants[Math.floor(Math.random() * participants.length)];
-                winnerDiv.textContent = `Le gagnant est : ${winner}`;
+                winnerDiv.textContent = `L'heureux participant est ${winner}`;
                 winnerDiv.style.color = getRandomColor();
                 gif.style.display = "none"; // Masquer le GIF après l'animation
             });
