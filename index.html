@@ -71,10 +71,10 @@
             background: rgba(255, 255, 255, 0.8);
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             width: auto;
-            max-width: 90%; /* Limite la largeur à 90% de l'écran */
-            white-space: nowrap; /* Empêche le texte de passer à la ligne */
+            max-width: 90%;
+            white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis; /* Ajoute "..." si le texte dépasse la largeur maximale */
+            text-overflow: ellipsis;
             text-align: center;
         }
         #animationGif {
@@ -116,7 +116,7 @@
         window.onload = async function () {
             const gif = document.getElementById("animationGif");
             const gifUrl = await fetchRandomGif();
-            gif.src = gifUrl; // Met le GIF dans la balise <img>
+            gif.src = gifUrl; // Charge un GIF initial
         };
 
         async function startAnimation(participants, winnerDiv, gif, callback) {
@@ -124,18 +124,19 @@
 
             // Fonction pour changer les points et le GIF
             async function updateDotsAndGif() {
-                // Ajouter les points défilants
-                dotCount = (dotCount + 1) % 8; // Cycle : 0, 1, 2, 3, 4, 5, 6, 7, 8
-                const dots = ".".repeat(dotCount); // Génère ".", "..", "..." ou "...."
+                dotCount = (dotCount + 1) % 8; // Points défilants
+                const dots = ".".repeat(dotCount); // ".", "..", "...", "...."
                 winnerDiv.textContent = dots;
 
-                // Obtenir un nouveau GIF
-                const gifUrl = await fetchRandomGif();
-                gif.src = gifUrl;
+                // Obtenir un nouveau GIF uniquement si les points atteignent "...."
+                if (dotCount === 3) {
+                    const gifUrl = await fetchRandomGif();
+                    gif.src = gifUrl;
+                }
             }
 
             // Lancer le changement à intervalles réguliers
-            const interval = setInterval(updateDotsAndGif, 250); // Change toutes les 250ms
+            const interval = setInterval(updateDotsAndGif, 500); // Change toutes les 500ms
 
             // Arrêter l'animation après 2 secondes
             setTimeout(() => {
