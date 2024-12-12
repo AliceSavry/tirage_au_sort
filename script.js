@@ -20,22 +20,124 @@ async function fetchRandomGif() {
     }
 }
 
+// Animation de confettis
+function launchConfetti() {
+    const count = 200;
+    const defaults = {
+        origin: { y: 0.7 },
+        zIndex: 1500
+    };
+
+    function fire(particleRatio, opts) {
+        confetti({
+            ...defaults,
+            ...opts,
+            particleCount: Math.floor(count * particleRatio),
+            scalar: 1.2,
+            spread: 100,
+            startVelocity: 55,
+        });
+    }
+
+    fire(0.25, {
+        spread: 26,
+        startVelocity: 55,
+    });
+
+    fire(0.2, {
+        spread: 60,
+    });
+
+    fire(0.35, {
+        spread: 100,
+        decay: 0.91,
+        scalar: 0.8
+    });
+
+    fire(0.1, {
+        spread: 120,
+        startVelocity: 25,
+        decay: 0.92,
+        scalar: 1.2
+    });
+
+    fire(0.1, {
+        spread: 120,
+        startVelocity: 45,
+    });
+}
+
 // Charger un GIF initial
 window.onload = async function () {
     const gif = document.getElementById("animationGif");
     gif.src = await fetchRandomGif();
+    setupDinoEscape();
 };
 
-// Déplacer l'icône animée
+// Gestion de la fuite du dinosaure
+function setupDinoEscape() {
+    const movingIcon = document.getElementById("movingIcon");
+    const escapeDistance = 150; // Distance augmentée
+    let isEscaping = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+        
+        if (isEscaping) return;
+
+        const dinoRect = movingIcon.getBoundingClientRect();
+        const dinoCenterX = dinoRect.left + dinoRect.width / 2;
+        const dinoCenterY = dinoRect.top + dinoRect.height / 2;
+        
+        const distance = Math.sqrt(
+            Math.pow(e.clientX - dinoCenterX, 2) + 
+            Math.pow(e.clientY - dinoCenterY, 2)
+        );
+
+        if (distance < escapeDistance) {
+            isEscaping = true;
+            
+            // Calculer la direction opposée à la souris avec plus d'amplitude
+            const angle = Math.atan2(dinoCenterY - e.clientY, dinoCenterX - e.clientX);
+            const escapeX = Math.cos(angle) * window.innerWidth * 0.4;
+            const escapeY = Math.sin(angle) * window.innerHeight * 0.4;
+            
+            // Ajouter une position aléatoire pour plus de naturel
+            const randomX = (Math.random() - 0.5) * 150;
+            const randomY = (Math.random() - 0.5) * 150;
+            
+            // Position d'échappement finale
+            const newX = Math.min(Math.max(50, dinoCenterX + escapeX + randomX), window.innerWidth - dinoRect.width - 50);
+            const newY = Math.min(Math.max(50, dinoCenterY + escapeY + randomY), window.innerHeight - dinoRect.height - 50);
+            
+            // Appliquer la transformation avec animation
+            movingIcon.style.transform = `translate(${newX}px, ${newY}px)`;
+            
+            // Réinitialiser après l'animation
+            setTimeout(() => {
+                isEscaping = false;
+            }, 800);
+        }
+    });
+}
+
+// Déplacer l'icône animée (mouvement aléatoire périodique)
 const movingIcon = document.getElementById("movingIcon");
 
 function moveIconRandomly() {
-    const x = Math.random() * (window.innerWidth - movingIcon.offsetWidth);
-    const y = Math.random() * (window.innerHeight - movingIcon.offsetHeight);
-    movingIcon.style.transform = `translate(${x}px, ${y}px)`;
+    if (!document.hidden) {  // Ne bouge que si la page est visible
+        const dinoRect = movingIcon.getBoundingClientRect();
+        const margin = 50;  // Marge pour éviter les bords
+        const x = Math.random() * (window.innerWidth - dinoRect.width - margin * 2) + margin;
+        const y = Math.random() * (window.innerHeight - dinoRect.height - margin * 2) + margin;
+        movingIcon.style.transform = `translate(${x}px, ${y}px)`;
+    }
 }
 
-setInterval(moveIconRandomly, 2000);
+setInterval(moveIconRandomly, 3000);  // Intervalle augmenté pour des mouvements plus espacés
 
 // Lancer l'animation
 async function startAnimation(participants, winnerDiv, gif, callback) {
@@ -79,6 +181,31 @@ function launchFireworks() {
     setTimeout(() => fireworks.stop(), 3000);
 }
 
+// Liste de phrases moqueuses
+const mockingPhrases = [
+    "Alors {name}, on n'a pas de chance aujourd'hui ? 😏",
+    "Félicitations {name} ! Tu es l'heureux(se) perdant(e) ! 🎉",
+    "La roue du destin a parlé, {name}... Et elle ne t'aime pas ! 😈",
+    "Oups {name}, le dinosaure t'a choisi(e) ! 🦖",
+    "Pas de bol {name}, c'est ton tour de briller... ou pas ! ✨",
+    "Hey {name} ! Tu viens de gagner... le droit de perdre ! 🎯",
+    "Le karma a frappé, et c'est tombé sur toi, {name} ! 🎲",
+    "{name}, tu es l'élu(e)... des malchanceux ! 🍀",
+    "Tiens tiens tiens, {name}... Quelle surprise ! 😎",
+    "Le sort en est jeté, {name}, et il n'est pas en ta faveur ! 🎭",
+    "Bravo {name}, tu as gagné le gros lot... de la malchance ! 🎪",
+    "{name}, prépare-toi à briller... de désespoir ! ⭐",
+    "Le destin a parlé, {name}, et il est mort de rire ! 😂",
+    "Tadaaa {name} ! C'est ton moment de... gloire ? 🌟",
+    "Allez {name}, montre-nous ce que tu as dans le ventre ! 💪"
+];
+
+// Fonction pour obtenir une phrase aléatoire
+function getRandomMockingPhrase(name) {
+    const randomPhrase = mockingPhrases[Math.floor(Math.random() * mockingPhrases.length)];
+    return randomPhrase.replace('{name}', name);
+}
+
 // Bouton de tirage
 document.getElementById("drawButton").addEventListener("click", async function () {
     const input = document.getElementById("participantInput").value.trim();
@@ -94,9 +221,67 @@ document.getElementById("drawButton").addEventListener("click", async function (
 
     await startAnimation(participants, winnerDiv, gif, () => {
         const winner = participants[Math.floor(Math.random() * participants.length)];
-        winnerDiv.textContent = `Désolé ${winner}, c'est à toi !`;
+        winnerDiv.textContent = getRandomMockingPhrase(winner);
         updateScore(winner);
         addToHistory(winner);
         launchFireworks();
+        launchConfetti();
     });
 });
+
+// Mise à jour de la fonction addToHistory pour utiliser aussi les phrases moqueuses
+function addToHistory(winner) {
+    const historyList = document.getElementById("historyList");
+    const newEntry = document.createElement("li");
+    newEntry.innerHTML = `<i class="fas fa-skull"></i> ${getRandomMockingPhrase(winner)}`;
+    historyList.appendChild(newEntry);
+}
+
+function faireTirage() {
+    const textarea = document.getElementById('participants');
+    const resultDiv = document.getElementById('result');
+    const dino = document.getElementById('dino');
+    
+    // Récupérer et nettoyer la liste des participants
+    let participants = textarea.value
+        .split('\n')
+        .map(name => name.trim())
+        .filter(name => name.length > 0);
+    
+    if (participants.length === 0) {
+        alert('Veuillez entrer au moins un participant !');
+        return;
+    }
+
+    // Cacher le résultat précédent
+    resultDiv.classList.add('hidden');
+    resultDiv.classList.remove('visible');
+    
+    // Animation du dino
+    dino.classList.add('running');
+    
+    // Effet de tirage au sort
+    let shuffleCount = 0;
+    const maxShuffles = 20;
+    const shuffleInterval = setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * participants.length);
+        resultDiv.textContent = participants[randomIndex];
+        shuffleCount++;
+        
+        if (shuffleCount >= maxShuffles) {
+            clearInterval(shuffleInterval);
+            
+            // Arrêter l'animation du dino
+            setTimeout(() => {
+                dino.classList.remove('running');
+                resultDiv.classList.remove('hidden');
+                resultDiv.classList.add('visible', 'shake');
+                
+                // Retirer l'animation de shake après qu'elle soit terminée
+                setTimeout(() => {
+                    resultDiv.classList.remove('shake');
+                }, 500);
+            }, 500);
+        }
+    }, 100);
+}
