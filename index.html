@@ -4,112 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unluck Wheel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Knewave&family=Leckerli+One&family=Shadows+Into+Light+Two&display=swap" rel="stylesheet">
-    <style>
-        /* Style de base */
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(to bottom, #fef4e8, #d3eaf7); /* Doux dégradé pastel */
-            color: #333;
-            min-height: 100vh; /* S'étend sur toute la hauteur de l'écran */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        h1 {
-            font-family: 'Shadows Into Light Two', cursive;
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #333;
-            margin-top: 20px;
-        }
-        #input-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        textarea {
-            font-family: 'Shadows Into Light Two', cursive;
-            font-size: 1em;
-            width: 90%; /* Utilise 90% de la largeur disponible */
-            max-width: 500px; /* Limite maximale pour les grands écrans */
-            height: 150px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        button {
-            font-family: 'Leckerli One', cursive;
-            font-size: 1.2em;
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
-            background-color: #f4a261;
-            color: #fff;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-            width: 90%; /* Bouton responsive */
-            max-width: 300px; /* Taille maximale du bouton */
-        }
-        button:hover {
-            background-color: #e76f51;
-        }
-        #winner {
-            margin-top: 20px;
-            font-family: 'Knewave', cursive;
-            font-size: 1.5em;
-            font-weight: italic;
-            color: green;
-            display: inline-block;
-            padding: 10px 20px;
-            border: 2px dashed #ccc;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            width: auto;
-            max-width: 90%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-align: center;
-        }
-        #animationGif {
-            display: block;
-            width: 90%; /* GIF responsive */
-            max-width: 300px; /* Taille maximale */
-            height: auto; /* Maintient les proportions */
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Media Queries pour les très petits écrans (inférieur à 400px) */
-        @media (max-width: 400px) {
-            h1 {
-                font-size: 2em;
-            }
-            textarea {
-                font-size: 0.9em;
-                height: 120px;
-            }
-            button {
-                font-size: 1em;
-                padding: 8px 15px;
-            }
-            #winner {
-                font-size: 1.2em;
-            }
-        }
-    </style>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- FontAwesome pour les icônes -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Styles CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Unluck Wheel</h1>
@@ -117,8 +17,26 @@
         <textarea id="participantInput" placeholder="Collez ici les noms des participants, un par ligne"></textarea>
         <img id="animationGif" src="" alt="GIF aléatoire">
     </div>
-    <button id="drawButton">Faire le Tirage</button>
+    <button id="drawButton"><i class="fas fa-random"></i> Faire le Tirage</button>
     <div id="winner">Le perdant s'affichera ici</div>
-    <script src="script.js"></script> <!-- Fichier JS externe -->
+
+    <!-- Historique -->
+    <div id="history">
+        <h2>Historique des tirages</h2>
+        <ul id="historyList"></ul>
+    </div>
+
+    <!-- Scoreboard -->
+    <div id="scoreboard">
+        <h2>Scoreboard</h2>
+        <ul id="scoreList"></ul>
+    </div>
+
+    <!-- Canvas pour les feux d'artifice -->
+    <canvas id="fireworksCanvas"></canvas>
+
+    <!-- Script JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js/dist/index.umd.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
