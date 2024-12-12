@@ -5,7 +5,6 @@ const defaultGifs = [
     "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
     "https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif"
 ];
-const scores = {};
 
 // Récupérer un GIF aléatoire
 async function fetchRandomGif() {
@@ -24,7 +23,21 @@ async function fetchRandomGif() {
 window.onload = async function () {
     const gif = document.getElementById("animationGif");
     gif.src = await fetchRandomGif();
+    moveIconRandomly(); // Déplacer l'icône dès le chargement
 };
+
+// Déplacer l'icône aléatoirement
+const movingIcon = document.getElementById("movingIcon");
+
+function moveIconRandomly() {
+    const x = Math.random() * (window.innerWidth - movingIcon.offsetWidth);
+    const y = Math.random() * (window.innerHeight - movingIcon.offsetHeight);
+
+    movingIcon.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+// Déplacement toutes les 2 secondes
+setInterval(moveIconRandomly, 2000);
 
 // Lancer l'animation
 async function startAnimation(participants, winnerDiv, gif, callback) {
