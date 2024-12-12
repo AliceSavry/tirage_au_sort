@@ -117,13 +117,13 @@
             }
 
             // Lancer le changement à intervalles réguliers
-            const interval = setInterval(updateNameAndGif, 500); // Change toutes les 500ms
+            const interval = setInterval(updateNameAndGif, 250); // Change toutes les 250ms
 
-            // Arrêter l'animation après 3 secondes
+            // Arrêter l'animation après 1 seconde
             setTimeout(() => {
                 clearInterval(interval);
                 callback();
-            }, 3000);
+            }, 1000);
         }
 
         function getRandomColor() {
@@ -145,7 +145,7 @@
             // Lancer l'animation
             await startAnimation(participants, winnerDiv, gif, () => {
                 const winner = participants[Math.floor(Math.random() * participants.length)];
-                winnerDiv.textContent = `Le gagnant est : ${winner}`;
+                winnerDiv.textContent = `Désolé ${winner}, tu es interrogé !`;
                 winnerDiv.style.color = getRandomColor();
             });
         });
