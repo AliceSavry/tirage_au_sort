@@ -17,13 +17,18 @@
             font-weight: bold;
             color: #333;
         }
+        #input-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            margin: 20px 0;
+        }
         textarea {
             font-family: 'Shadows Into Light Two', cursive;
             font-size: 18px;
-            width: 90%;
-            max-width: 500px;
-            margin: 10px auto;
-            display: block;
+            width: 300px;
+            height: 200px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -60,17 +65,21 @@
             transition: color 0.3s;
         }
         #animationGif {
-            display: none;
+            display: block;
             width: 300px;
-            margin: 20px auto;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
     <h1>Unluck Wheel</h1>
-    <textarea id="participantInput" rows="10" placeholder="Collez ici les noms des participants, un par ligne"></textarea><br>
+    <div id="input-container">
+        <textarea id="participantInput" placeholder="Collez ici les noms des participants, un par ligne"></textarea>
+        <img id="animationGif" src="" alt="GIF aléatoire">
+    </div>
     <button id="drawButton">Faire le Tirage</button>
-    <img id="animationGif" src="" alt="GIF aléatoire">
     <div id="winner">Le gagnant s'affichera ici</div>
 
     <script>
@@ -83,22 +92,35 @@
             return data.data.images.original.url; // URL du GIF
         }
 
-        function getRandomColor() {
-            return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
-        }
-
-        function startAnimation(participants, winnerDiv, gif, callback) {
+        async function startAnimation(participants, winnerDiv, gif, callback) {
             let index = 0;
-            const interval = setInterval(() => {
-                winnerDiv.textContent = participants[index];
-                index = (index + 1) % participants.length;
-                winnerDiv.style.color = getRandomColor();
-            }, 100);
 
+            // Fonction pour changer le nom et le GIF
+            async function updateNameAndGif() {
+                if (index < participants.length) {
+                    winnerDiv.textContent = participants[index];
+                    winnerDiv.style.color = getRandomColor();
+
+                    // Obtenir un nouveau GIF
+                    const gifUrl = await fetchRandomGif();
+                    gif.src = gifUrl;
+
+                    index = (index + 1) % participants.length;
+                }
+            }
+
+            // Lancer le changement à intervalles réguliers
+            const interval = setInterval(updateNameAndGif, 500); // Change toutes les 500ms
+
+            // Arrêter l'animation après 3 secondes
             setTimeout(() => {
                 clearInterval(interval);
                 callback();
             }, 3000);
+        }
+
+        function getRandomColor() {
+            return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
         }
 
         document.getElementById("drawButton").addEventListener("click", async function () {
@@ -113,17 +135,11 @@
             const winnerDiv = document.getElementById("winner");
             const gif = document.getElementById("animationGif");
 
-            // Obtenez un nouveau GIF
-            const gifUrl = await fetchRandomGif();
-            gif.src = gifUrl;
-            gif.style.display = "block";
-
             // Lancer l'animation
-            startAnimation(participants, winnerDiv, gif, () => {
+            await startAnimation(participants, winnerDiv, gif, () => {
                 const winner = participants[Math.floor(Math.random() * participants.length)];
-                winnerDiv.textContent = `L'heureux participant est ${winner}`;
+                winnerDiv.textContent = `Le gagnant est : ${winner}`;
                 winnerDiv.style.color = getRandomColor();
-                gif.style.display = "none"; // Masquer le GIF après l'animation
             });
         });
     </script>
